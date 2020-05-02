@@ -27,7 +27,7 @@ if __name__ == '__main__':
         dict_categories[category] = i
     print(dict_categories)
     files_input = ['../../dataset/%s-validation-downsample.json' % dataset_name, '../../dataset/%s-train-downsample.json' % dataset_name, '../../dataset/%s-test.json' % dataset_name]
-    files_output = ['val_videofolder_down.txt', 'train_videofolder_down.txt', 'test_videofolder.txt']
+    files_output = ['val_downsample_videofolder.txt', 'train_downsample_videofolder.txt', 'test_videofolder.txt']
     for (filename_input, filename_output) in zip(files_input, files_output):
         with open(filename_input) as f:
             data = json.load(f)
