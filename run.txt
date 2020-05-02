@@ -1,0 +1,36 @@
+TO PREPROCESS
+Make .csv files from json first.
+train file id;label same as val
+label file label
+test file id
+extract frames using ffmpeg downloaded via source build
+
+run gen_label_somthingv2.py in tools (edit it as well)
+ths will make val_videofolder and train_videofolder and category.txt files which are used by training program main.py
+
+
+TO TRAIN
+<<<<<<< HEAD
+python main.py somethingv2down Flow --arch resnet50 --num_segments 8 --gd 20 --lr 0.02 --wd 1e-4 --lr_steps 20 40 --epochs 50 --batch-size 32 --dropout 0.5 --consensus_type=avg --eval-freq=1 --shift --shift_div=8 --shift_place=blockres --npb --gpu 0 1 2
+
+python main.py somethingv2down RGB --arch resnet50 --num_segments 8 --gd 20 --lr 0.02 --wd 1e-4 --lr_steps 20 40 --epochs 50 --batch-size 32 --dropout 0.5 --consensus_type=avg --eval-freq=1 --shift --shift_div=8 --shift_place=blockres --npb --gpu 0 1 2 
+=======
+
+>>>>>>> 13d60925e2f3bc39abc4c5a6892630f65014fb19
+
+TO TEST
+                      #dataset         #modality    #Path                                                                  
+python test_models.py somethingv2 --weights=pretrained/TSM_somethingv2_RGB_resnet50_shift8_blockres_avg_segment8_e45.pth --test_segments=8 --batch_size=1  --test_crops=1
+
+<<<<<<< HEAD
+python test_models.py somethingv2down --weights=checkpoint/TSM_somethingv2down_RGB_resnet50_shift8_blockres_avg_segment8_e50_baseline/ckpt.best.pth.tar --test_segments=8 --batch_size=1  --test_crops=1 
+
+python test_models.py somethingv2down --weights=checkpoint/TSM_somethingv2down_RGB_resnet50_shift8_blockres_avg_segment8_e50/ckpt.best.pth.tar --test_segments=8 --batch_size=1  --test_crops=1 
+
+python test_models.py somethingv2down --weights=checkpoint/TSM_somethingv2down_Flow_resnet50_shift8_blockres_avg_segment8_e50/ckpt.best.pth.tar --test_segments=8 --batch_size=1  --test_crops=1 
+=======
+>>>>>>> 13d60925e2f3bc39abc4c5a6892630f65014fb19
+
+Pretrain run on gaila
+CUDA_VISIBLE_DEVICES=3                       #dataset         #modality    #Path                                                                
+python test_models.py somethingv2 --weights=pretrained/TSM_somethingv2_RGB_resnet50_shift8_blockres_avg_segment8_e45.pth --test_segments=8 --batch_size=16  --test_crops=1
