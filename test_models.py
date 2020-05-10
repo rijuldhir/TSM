@@ -16,8 +16,6 @@ from ops.models import TSN
 from ops.transforms import *
 from ops import dataset_config
 from torch.nn import functional as F
-import h5py
-import deepdish as dd
 
 # options
 parser = argparse.ArgumentParser(description="TSM testing on the full validation set")
@@ -53,13 +51,7 @@ parser.add_argument('--pretrain', type=str, default='imagenet')
 
 args = parser.parse_args()
 with open('check.txt','w') as f:
-<<<<<<< HEAD
     f.write("Pred	Labels\n")
-
-features = {}
-=======
-    f.write("Pred	Labels")
->>>>>>> 13d60925e2f3bc39abc4c5a6892630f65014fb19
 
 class AverageMeter(object):
     """Computes and stores the average and current value"""
@@ -87,18 +79,10 @@ def accuracy(output, target, topk=(1,)):
     pred = pred.t()
     with open('check.txt','a+') as f:
         f.write(str(target.cpu().numpy())+str(pred.cpu().numpy())+'\n')
-<<<<<<< HEAD
-    #print(pred.eq(target.view(1, -1).expand_as(pred)))
-=======
->>>>>>> 13d60925e2f3bc39abc4c5a6892630f65014fb19
     correct = pred.eq(target.view(1, -1).expand_as(pred))
     res = []
     for k in topk:
         correct_k = correct[:k].view(-1).float().sum(0)
-<<<<<<< HEAD
-        #print(correct_k)
-=======
->>>>>>> 13d60925e2f3bc39abc4c5a6892630f65014fb19
         res.append(correct_k.mul_(100.0 / batch_size))
     return res
 
@@ -255,15 +239,6 @@ def eval_video(video_data, net, this_test_segments, modality):
         if is_shift:
             data_in = data_in.view(batch_size * num_crop, this_test_segments, length, data_in.size(2), data_in.size(3))
         rst = net(data_in)
-        #print(label.cpu().numpy(),label.cpu().numpy().shape)
-        if label.cpu().numpy()[0] not in features:
-            features[label.cpu().numpy()[0]] = [1,[rst[0].cpu().numpy()]]
-        else:
-            features[label.cpu().numpy()[0]][0] += 1
-            features[label.cpu().numpy()[0]][1].append(rst[0].cpu().numpy())
-        #print(rst[0].cpu().numpy()[0][0],features[label.cpu().numpy()[0]][1][0][0])
-        #print(rst[0].cpu().numpy().shape)
-        rst = rst[1]
         rst = rst.reshape(batch_size, num_crop, -1).mean(1)
 
         if args.softmax:
@@ -354,17 +329,5 @@ print('-----Evaluation is finished------')
 print('Class Accuracy {:.02f}%'.format(np.mean(cls_acc) * 100))
 print('Overall Prec@1 {:.02f}% Prec@5 {:.02f}%'.format(top1.avg, top5.avg))
 
-lis = []
-for i,j in features.items():
-    for x in j[1]:
-        #print(x.shape)
-        lis.append((i,x))
-print(len(lis))
-lis = np.asarray(lis)
-np.save('features_train.npy',lis)
-
-dd.io.save('feats_train.h5', features, compression=None)
-#with h5py.File('feat.hdf5','w') as f:
-#    f.create_dataset(str(features),dtype="f")
 
 
